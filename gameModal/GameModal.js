@@ -18,10 +18,17 @@ export default function GameModal({ data, stopLearningHandler }) {
 
 	function knowOnPress() {
 		if (activeWord) {
-			const newWordTable = knowWordTableRefactor(wordTable, activeWord)
-			setActiveWord(findNewActiveWord(newWordTable))
-			setWordTable(newWordTable)
-			setTranslationVisible(false)
+			if (translationVisible) {
+				const newWordTable = knowWordTableRefactor(
+					wordTable,
+					activeWord
+				)
+				setActiveWord(findNewActiveWord(newWordTable))
+				setWordTable(newWordTable)
+				setTranslationVisible(false)
+			} else {
+				console.log("button inactive")
+			}
 		} else {
 			console.log(
 				"brak state aktywnego slowa. Klikniecie przycisku know powinno byc niemozliwe"
@@ -31,13 +38,17 @@ export default function GameModal({ data, stopLearningHandler }) {
 
 	function dontKnowOnPress() {
 		if (activeWord) {
-			const newWordTable = dontKnowWordTableRefactor(
-				wordTable,
-				activeWord
-			)
-			setActiveWord(findNewActiveWord(newWordTable))
-			setWordTable(newWordTable)
-			setTranslationVisible(false)
+			if (translationVisible) {
+				const newWordTable = dontKnowWordTableRefactor(
+					wordTable,
+					activeWord
+				)
+				setActiveWord(findNewActiveWord(newWordTable))
+				setWordTable(newWordTable)
+				setTranslationVisible(false)
+			} else {
+				console.log("button inactive")
+			}
 		} else {
 			console.log(
 				" brak state aktywnego slowa. klikniecie przycisku dont know powinno byc niemozliwe"

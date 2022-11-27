@@ -1,0 +1,63 @@
+import GameBox from "./GameBox"
+import { useState } from "react"
+import {
+	reformatDataForState,
+	knowWordTableRefactor,
+	findNewActiveWord,
+	dontKnowWordTableRefactor,
+} from "./utils/dataHandler"
+
+export default function GameModal({ data, stopLearningHandler }) {
+	const [wordTable, setWordTable] = useState(reformatDataForState(data))
+	const [activeWord, setActiveWord] = useState(findNewActiveWord(wordTable))
+	const [translationVisible, setTranslationVisible] = useState(false)
+
+	if (!findNewActiveWord(wordTable)) {
+		return stopLearningHandler()
+	}
+
+	function knowOnPress() {
+		if (activeWord) {
+			const newWordTable = knowWordTableRefactor(wordTable, activeWord)
+			setActiveWord(findNewActiveWord(newWordTable))
+			setWordTable(newWordTable)
+			setTranslationVisible(false)
+		} else {
+			console.log(
+				"brak state aktywnego slowa. Klikniecie przycisku know powinno byc niemozliwe"
+			)
+		}
+	}
+
+	function dontKnowOnPress() {
+		if (activeWord) {
+			const newWordTable = dontKnowWordTableRefactor(
+				wordTable,
+				activeWord
+			)
+			setActiveWord(findNewActiveWord(newWordTable))
+			setWordTable(newWordTable)
+			setTranslationVisible(false)
+		} else {
+			console.log(
+				" brak state aktywnego slowa. klikniecie przycisku dont know powinno byc niemozliwe"
+			)
+		}
+	}
+
+	function showTranslation() {
+		setTranslationVisible(true)
+	}
+
+	return (
+		<GameBox
+			wordTable={wordTable}
+			knowOnPress={knowOnPress}
+			dontKnowOnPress={dontKnowOnPress}
+			word={activeWord}
+			stopLearningHandler={stopLearningHandler}
+			translationVisible={translationVisible}
+			showTranslation={showTranslation}
+		/>
+	)
+}

@@ -81,12 +81,12 @@ export function fetchDueDateWords() {
 	return promise
 }
 
-export function fetchNullDateWords() {
+export function fetchNullDateWords(length) {
 	const promise = new Promise((resolve, reject) => {
 		database.transaction((tx) => {
 			tx.executeSql(
-				"SELECT * FROM words WHERE nextdate IS NULL",
-				[],
+				"SELECT * FROM words WHERE nextdate IS NULL LIMIT (?)",
+				[length],
 				(_, result) => {
 					resolve(result.rows._array)
 				},

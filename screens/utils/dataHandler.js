@@ -2,6 +2,7 @@ import { insertWord } from "../../util/database"
 import { mydata } from "../../data/exampleData"
 
 export function insertDefaultData() {
+	let firstWords = []
 	for (let i = 0; i < mydata.length; i++) {
 		const word = {
 			id: mydata[i].id,
@@ -11,5 +12,9 @@ export function insertDefaultData() {
 			nextDate: null,
 		}
 		insertWord(word)
+		if (i < 10) {
+			firstWords.push(word)
+		}
 	}
+	return firstWords
 }

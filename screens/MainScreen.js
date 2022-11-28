@@ -3,7 +3,11 @@ import words from "../words"
 import { useState, useEffect } from "react"
 import GameModal from "../gameModal/GameModal"
 import StartLearningButton from "../components/StartLearningButton"
-import { fetchWords } from "../util/database"
+import {
+	fetchWords,
+	fetchDueDateWords,
+	fetchNullDateWords,
+} from "../util/database"
 import { insertDefaultData } from "./utils/dataHandler"
 
 export default function MainScreen() {
@@ -17,14 +21,22 @@ export default function MainScreen() {
 		if (gameOn) {
 			async function getData() {
 				setIsFetching(true)
-				console.log("fetching SQL database")
+				console.log("fetching due date words from SQL database")
 				try {
-					const fetchedData = await fetchWords()
-					setData(fetchedData)
-					console.log(fetchedData[0])
-					console.log(fetchedData[1])
-					console.log(fetchedData[2])
-					console.log(fetchedData[3])
+					const fetchedData = await fetchDueDateWords()
+					if (fetchedData.length < 10) {
+						const neededLength = 10 - fetchedData.length
+						const fetchedNullData = await fetchNullDateWords(
+							neededLength
+						)
+						if (neededLength === 10) {
+							setData(fetchedNullData)
+						} else {
+							setData([...fetchedData, ...fetchedNullData])
+						}
+					} else {
+						setData(fetchedData.slice(0, 10))
+					}
 					if (fetchedData && fetchedData.length < 10) {
 						insertDefaultData()
 						console.log("inserting default data to database")
@@ -39,12 +51,17 @@ export default function MainScreen() {
 		}
 	}, [gameOn])
 
+	function stopLearningHandler() {
+		const afterGameData = data
+		setGameOn(false)
+	}
+
 	return (
 		<View style={styles.container}>
 			{gameOn ? (
 				<GameModal
-					data={words}
-					stopLearningHandler={() => setGameOn(false)}
+					data={data}
+					stopLearningHandler={stopLearningHandler}
 				/>
 			) : (
 				<StartLearningButton onPress={() => setGameOn(true)} />

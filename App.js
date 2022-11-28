@@ -6,9 +6,9 @@ import GameModal from "./gameModal/GameModal"
 import StartLearningButton from "./components/StartLearningButton"
 import { init } from "./util/database"
 import SQLtest from "./components/SQLtest"
+import MainScreen from "./screens/MainScreen"
 
 export default function App() {
-	const [gameOn, setGameOn] = useState(false)
 	const [dbInitialized, setDbInitialized] = useState(false)
 
 	useEffect(() => {
@@ -31,14 +31,7 @@ export default function App() {
 
 	return (
 		<View style={styles.container}>
-			{gameOn ? (
-				<GameModal
-					data={words}
-					stopLearningHandler={() => setGameOn(false)}
-				/>
-			) : (
-				<StartLearningButton onPress={() => setGameOn(true)} />
-			)}
+			<MainScreen />
 			{/* <SQLtest /> */}
 			<StatusBar style="auto" />
 		</View>

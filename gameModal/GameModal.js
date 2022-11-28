@@ -13,7 +13,7 @@ export default function GameModal({ data, stopLearningHandler }) {
 	const [translationVisible, setTranslationVisible] = useState(false)
 
 	if (!findNewActiveWord(wordTable)) {
-		return stopLearningHandler()
+		stopLearningHandler()
 	}
 
 	function knowOnPress() {

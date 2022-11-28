@@ -26,7 +26,7 @@ export default function SQLtest() {
 	// updateWordLevel("4937", 4)
 
 	// update date works:
-	updateWordDate("4937", new Date().toISOString().split("T")[0])
+	// updateWordDate("4937", new Date().toISOString().split("T")[0])
 
 	useEffect(() => {
 		async function getData() {

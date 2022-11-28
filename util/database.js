@@ -62,6 +62,43 @@ export function fetchWords() {
 	return promise
 }
 
+export function fetchDueDateWords() {
+	const today = new Date().toISOString().split("T")[0]
+	const promise = new Promise((resolve, reject) => {
+		database.transaction((tx) => {
+			tx.executeSql(
+				"SELECT * FROM words WHERE nextdate <= (?) ORDER BY nextdate ASC",
+				[today],
+				(_, result) => {
+					resolve(result.rows._array)
+				},
+				(_, error) => {
+					reject(error)
+				}
+			)
+		})
+	})
+	return promise
+}
+
+export function fetchNullDateWords() {
+	const promise = new Promise((resolve, reject) => {
+		database.transaction((tx) => {
+			tx.executeSql(
+				"SELECT * FROM words WHERE nextdate IS NULL",
+				[],
+				(_, result) => {
+					resolve(result.rows._array)
+				},
+				(_, error) => {
+					reject(error)
+				}
+			)
+		})
+	})
+	return promise
+}
+
 export function updateWordLevel(id, level) {
 	const promise = new Promise((resolve, reject) => {
 		database.transaction((tx) => {
@@ -86,6 +123,26 @@ export function updateWordDate(id, date) {
 			tx.executeSql(
 				`UPDATE words SET nextdate = (?) WHERE id = (?)`,
 				[date, id],
+				(_, result) => {
+					resolve(result)
+				},
+				(_, error) => {
+					reject(error)
+				}
+			)
+		})
+	})
+	return promise
+}
+
+export function updateWordLevelAndDate(id, level, date) {
+	const promise = new Promise((resolve, reject) => {
+		database.transaction((tx) => {
+			tx.executeSql(
+				`UPDATE words 
+				SET nextdate = (?), level = (?) 
+				WHERE id = (?)`,
+				[date, level, id],
 				(_, result) => {
 					resolve(result)
 				},

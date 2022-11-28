@@ -21,6 +21,10 @@ export default function MainScreen() {
 				try {
 					const fetchedData = await fetchWords()
 					setData(fetchedData)
+					console.log(fetchedData[0])
+					console.log(fetchedData[1])
+					console.log(fetchedData[2])
+					console.log(fetchedData[3])
 					if (fetchedData && fetchedData.length < 10) {
 						insertDefaultData()
 						console.log("inserting default data to database")

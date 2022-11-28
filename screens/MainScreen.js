@@ -9,6 +9,7 @@ import {
 	fetchNullDateWords,
 } from "../util/database"
 import { insertDefaultData } from "./utils/dataHandler"
+import markGame from "./utils/markGame"
 
 export default function MainScreen() {
 	const [gameOn, setGameOn] = useState(false)
@@ -26,13 +27,17 @@ export default function MainScreen() {
 					const fetchedData = await fetchDueDateWords()
 					if (fetchedData.length < 10) {
 						const neededLength = 10 - fetchedData.length
-						const fetchedNullData = await fetchNullDateWords(
-							neededLength
-						)
-						if (neededLength === 10) {
-							setData(fetchedNullData)
-						} else {
-							setData([...fetchedData, ...fetchedNullData])
+						try {
+							const fetchedNullData = await fetchNullDateWords(
+								neededLength
+							)
+							if (neededLength === 10) {
+								setData(fetchedNullData)
+							} else {
+								setData([...fetchedData, ...fetchedNullData])
+							}
+						} catch (error) {
+							console.log(error)
 						}
 					} else {
 						setData(fetchedData.slice(0, 10))
@@ -52,13 +57,13 @@ export default function MainScreen() {
 	}, [gameOn])
 
 	function stopLearningHandler() {
-		const afterGameData = data
+		setData()
 		setGameOn(false)
 	}
 
 	return (
 		<View style={styles.container}>
-			{gameOn ? (
+			{gameOn && data ? (
 				<GameModal
 					data={data}
 					stopLearningHandler={stopLearningHandler}

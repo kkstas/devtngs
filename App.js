@@ -1,11 +1,7 @@
 import { StatusBar } from "expo-status-bar"
 import { StyleSheet, View, Text, Button } from "react-native"
-import words from "./words"
 import { useState, useEffect } from "react"
-import GameModal from "./gameModal/GameModal"
-import StartLearningButton from "./components/StartLearningButton"
 import { init } from "./util/database"
-import SQLtest from "./components/SQLtest"
 import MainScreen from "./screens/MainScreen"
 
 export default function App() {
@@ -32,7 +28,6 @@ export default function App() {
 	return (
 		<View style={styles.container}>
 			<MainScreen />
-			{/* <SQLtest /> */}
 			<StatusBar style="auto" />
 		</View>
 	)

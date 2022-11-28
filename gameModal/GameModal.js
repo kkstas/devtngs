@@ -6,6 +6,7 @@ import {
 	findNewActiveWord,
 	dontKnowWordTableRefactor,
 } from "./utils/dataHandler"
+import markGame from "../screens/utils/markGame"
 
 export default function GameModal({ data, stopLearningHandler }) {
 	const [wordTable, setWordTable] = useState(reformatDataForState(data))
@@ -13,6 +14,8 @@ export default function GameModal({ data, stopLearningHandler }) {
 	const [translationVisible, setTranslationVisible] = useState(false)
 
 	if (!findNewActiveWord(wordTable)) {
+		const afterGameData = wordTable
+		markGame(afterGameData)
 		stopLearningHandler()
 	}
 
